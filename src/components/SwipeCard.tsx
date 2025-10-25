@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { X, Heart, MapPin, Briefcase, GraduationCap } from "lucide-react";
 
 interface SwipeCardProps {
@@ -23,6 +23,11 @@ const SwipeCard = ({ profile, onSwipe, currentUserSharesGPA = false }: SwipeCard
   const [isDragging, setIsDragging] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const startPos = useRef({ x: 0, y: 0 });
+
+  // Reset position when profile changes
+  useEffect(() => {
+    setPosition({ x: 0, y: 0 });
+  }, [profile.id]);
 
   const handleDragStart = (clientX: number, clientY: number) => {
     setIsDragging(true);

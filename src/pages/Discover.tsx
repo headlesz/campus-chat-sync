@@ -148,6 +148,7 @@ const Discover = () => {
 
             {/* Active card */}
             <SwipeCard
+              key={currentProfile.id}
               profile={currentProfile}
               onSwipe={handleSwipe}
               currentUserSharesGPA={mockCurrentUser.shareGPA}
