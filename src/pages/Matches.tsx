@@ -1,4 +1,4 @@
-import { MessageCircle, Heart, User } from "lucide-react";
+import { MessageCircle, Heart, User, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const mockMatches = [
@@ -100,6 +100,13 @@ const Matches = () => {
           <button className="flex flex-col items-center gap-1 text-foreground">
             <MessageCircle className="w-6 h-6" />
             <span className="text-xs font-medium">Matches</span>
+          </button>
+          <button
+            onClick={() => navigate("/recommended")}
+            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <MapPin className="w-6 h-6" />
+            <span className="text-xs font-medium">Recommended</span>
           </button>
           <button
             onClick={() => navigate("/profile")}

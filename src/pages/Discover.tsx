@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SwipeCard from "@/components/SwipeCard";
 import MatchModal from "@/components/MatchModal";
-import { Briefcase, Heart } from "lucide-react";
+import { Briefcase, Heart, MessageCircle, User, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -174,7 +174,7 @@ const Discover = () => {
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-around">
-          <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <button className="flex flex-col items-center gap-1 text-foreground">
             <Heart className="w-6 h-6" />
             <span className="text-xs font-medium">Discover</span>
           </button>
@@ -184,6 +184,13 @@ const Discover = () => {
           >
             <MessageCircle className="w-6 h-6" />
             <span className="text-xs font-medium">Matches</span>
+          </button>
+          <button
+            onClick={() => navigate("/recommended")}
+            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <MapPin className="w-6 h-6" />
+            <span className="text-xs font-medium">Recommended</span>
           </button>
           <button
             onClick={() => navigate("/profile")}
@@ -197,8 +204,5 @@ const Discover = () => {
     </div>
   );
 };
-
-// Missing imports
-import { MessageCircle, User } from "lucide-react";
 
 export default Discover;
