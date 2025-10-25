@@ -1,0 +1,36 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8E7B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F2C20E;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C13D88;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4CB6AC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="55" fill="url(#bgGradient)" stroke="#005294" stroke-width="2"/>
+  
+  <!-- Chat bubble 1 -->
+  <ellipse cx="45" cy="45" rx="18" ry="12" fill="url(#chatGradient)" opacity="0.9"/>
+  <path d="M 35 45 L 25 50 L 30 45 Z" fill="url(#chatGradient)" opacity="0.9"/>
+  
+  <!-- Chat bubble 2 -->
+  <ellipse cx="75" cy="65" rx="20" ry="14" fill="#005294" opacity="0.8"/>
+  <path d="M 85 65 L 95 70 L 90 65 Z" fill="#005294" opacity="0.8"/>
+  
+  <!-- Chat bubble 3 -->
+  <ellipse cx="60" cy="80" rx="15" ry="10" fill="#4CB6AC" opacity="0.7"/>
+  <path d="M 50 80 L 40 85 L 45 80 Z" fill="#4CB6AC" opacity="0.7"/>
+  
+  <!-- Sync arrows -->
+  <path d="M 30 30 L 35 25 M 35 25 L 40 30" stroke="#C13D88" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M 80 30 L 85 25 M 85 25 L 90 30" stroke="#C13D88" stroke-width="3" stroke-linecap="round" fill="none"/>
+  
+  <!-- Center sync symbol -->
+  <circle cx="60" cy="60" r="8" fill="#C13D88" opacity="0.8"/>
+  <path d="M 55 60 L 60 55 L 65 60 M 60 55 L 60 65" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>

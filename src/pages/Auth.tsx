@@ -48,6 +48,9 @@ const Auth = () => {
       <div className="w-full max-w-md animate-fade-in">
         {/* Logo & Header */}
         <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <img src="/logo.jpeg" alt="CampusMatch" className="w-16 h-16" />
+          </div>
           <h1 className="text-4xl font-bold text-foreground mb-2">CampusMatch</h1>
           <p className="text-muted-foreground">Connect, network, and find your match</p>
         </div>

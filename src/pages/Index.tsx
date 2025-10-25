@@ -13,6 +13,9 @@ const Index = () => {
         
         <div className="relative max-w-6xl mx-auto px-6 py-20 lg:py-32">
           <div className="text-center space-y-8 animate-fade-in">
+            <div className="flex justify-center mb-4">
+              <img src="/logo.jpeg" alt="CampusMatch" className="w-20 h-20" />
+            </div>
             <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-sm font-medium text-primary">
               <Sparkles className="w-4 h-4" />
               AI-Powered Campus Connections

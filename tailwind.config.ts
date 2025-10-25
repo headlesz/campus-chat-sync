@@ -52,6 +52,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Campus Chat Sync brand colors
+        "smitten-pink": "#C13D88",
+        "jonquil-yellow": "#F2C20E", 
+        "electric-blue": "#005294",
+        "banana-mania": "#F8E7B4",
+        "verdigris": "#4CB6AC",
       },
       borderRadius: {
         lg: "var(--radius)",

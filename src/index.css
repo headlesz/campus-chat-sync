@@ -8,8 +8,8 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Base colors - YC-style minimalist palette */
-    --background: 0 0% 98%;
+    /* Base colors - Campus Chat Sync vibrant palette */
+    --background: 48 100% 97%; /* Banana Mania background */
     --foreground: 220 15% 20%;
 
     --card: 0 0% 100%;
@@ -18,35 +18,35 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 20%;
 
-    /* Primary - Vibrant electric blue accent */
-    --primary: 217 91% 60%;
+    /* Primary - Smitten Pink for main actions and branding */
+    --primary: 330 60% 50%; /* Smitten Pink #C13D88 */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 217 91% 50%;
+    --primary-hover: 330 60% 40%;
 
-    /* Secondary - Soft neutral for secondary actions */
-    --secondary: 220 15% 96%;
+    /* Secondary - Jonquil Yellow for secondary actions */
+    --secondary: 45 85% 50%; /* Jonquil Yellow #F2C20E */
     --secondary-foreground: 220 15% 20%;
 
     /* Muted - Subtle backgrounds and disabled states */
-    --muted: 220 15% 96%;
+    --muted: 48 100% 97%; /* Banana Mania */
     --muted-foreground: 220 10% 50%;
 
-    /* Accent - For highlights and special states */
-    --accent: 217 91% 60%;
+    /* Accent - Electric Blue for contrast buttons */
+    --accent: 210 100% 30%; /* Electric Blue #005294 */
     --accent-foreground: 0 0% 100%;
 
     /* Destructive - For errors and destructive actions */
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Success - For confirmations and positive actions */
-    --success: 142 71% 45%;
+    /* Success - Verdigris for status/verified */
+    --success: 175 45% 50%; /* Verdigris #4CB6AC */
     --success-foreground: 0 0% 100%;
 
     /* Borders and inputs */
-    --border: 220 15% 90%;
-    --input: 220 15% 90%;
-    --ring: 217 91% 60%;
+    --border: 48 50% 90%; /* Light banana mania */
+    --input: 48 50% 90%;
+    --ring: 330 60% 50%; /* Smitten Pink for focus */
 
     /* Radius for consistent rounded corners */
     --radius: 1rem;
@@ -72,28 +72,32 @@ All colors MUST be HSL.
     --popover: 220 15% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 217 91% 60%;
+    /* Primary - Smitten Pink for dark mode */
+    --primary: 330 60% 60%; /* Brighter pink for dark mode */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 217 91% 70%;
+    --primary-hover: 330 60% 70%;
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 0 0% 98%;
+    /* Secondary - Jonquil Yellow for dark mode */
+    --secondary: 45 85% 60%; /* Brighter yellow for dark mode */
+    --secondary-foreground: 220 15% 20%;
 
     --muted: 220 15% 18%;
     --muted-foreground: 220 10% 60%;
 
-    --accent: 217 91% 60%;
+    /* Accent - Electric Blue for dark mode */
+    --accent: 210 100% 40%; /* Brighter blue for dark mode */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 142 71% 45%;
+    /* Success - Verdigris for dark mode */
+    --success: 175 45% 60%; /* Brighter verdigris for dark mode */
     --success-foreground: 0 0% 100%;
 
     --border: 220 15% 22%;
     --input: 220 15% 22%;
-    --ring: 217 91% 60%;
+    --ring: 330 60% 60%; /* Smitten Pink for focus in dark mode */
   }
 }
 
