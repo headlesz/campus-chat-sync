@@ -101,7 +101,10 @@ const Matches = () => {
             <MessageCircle className="w-6 h-6" />
             <span className="text-xs font-medium">Matches</span>
           </button>
-          <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            onClick={() => navigate("/profile")}
+            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          >
             <User className="w-6 h-6" />
             <span className="text-xs font-medium">Profile</span>
           </button>

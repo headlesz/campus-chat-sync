@@ -35,6 +35,7 @@ const ProfileSetup = () => {
       toast.error("Please add a name and photo");
       return;
     }
+    
     toast.success("Profile saved!");
     navigate("/discover");
   };

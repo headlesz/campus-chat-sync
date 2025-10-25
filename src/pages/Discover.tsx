@@ -17,6 +17,8 @@ const mockProfiles = [
     bio: "Passionate about technology and making meaningful connections. Love hiking and exploring new cafes.",
     photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600",
     interests: ["AI", "Hiking", "Photography"],
+    gpa: 3.9,
+    shareGPA: true,
   },
   {
     id: "2",
@@ -27,6 +29,8 @@ const mockProfiles = [
     bio: "Designer by day, chef by night. Always looking for the next great adventure or coffee shop.",
     photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600",
     interests: ["Design", "Cooking", "Travel"],
+    gpa: 3.7,
+    shareGPA: true,
   },
   {
     id: "3",
@@ -37,8 +41,15 @@ const mockProfiles = [
     bio: "Building the future one line of code at a time. When I'm not coding, you'll find me at the climbing gym.",
     photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600",
     interests: ["Coding", "Rock Climbing", "Music"],
+    gpa: 3.85,
+    shareGPA: false, // This user hasn't opted in to share
   },
 ];
+
+// Mock current user data - in a real app this would come from authentication
+const mockCurrentUser = {
+  shareGPA: true, // Current user has opted in to share GPA
+};
 
 const Discover = () => {
   const [mode, setMode] = useState<Mode>("dating");
@@ -139,6 +150,7 @@ const Discover = () => {
             <SwipeCard
               profile={currentProfile}
               onSwipe={handleSwipe}
+              currentUserSharesGPA={mockCurrentUser.shareGPA}
             />
           </div>
         ) : (
@@ -173,7 +185,10 @@ const Discover = () => {
             <MessageCircle className="w-6 h-6" />
             <span className="text-xs font-medium">Matches</span>
           </button>
-          <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            onClick={() => navigate("/profile")}
+            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          >
             <User className="w-6 h-6" />
             <span className="text-xs font-medium">Profile</span>
           </button>

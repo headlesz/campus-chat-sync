@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { X, Heart, MapPin, Briefcase } from "lucide-react";
+import { X, Heart, MapPin, Briefcase, GraduationCap } from "lucide-react";
 
 interface SwipeCardProps {
   profile: {
@@ -11,11 +11,14 @@ interface SwipeCardProps {
     bio: string;
     photo: string;
     interests: string[];
+    gpa?: number;
+    shareGPA?: boolean;
   };
   onSwipe: (direction: "left" | "right") => void;
+  currentUserSharesGPA?: boolean;
 }
 
-const SwipeCard = ({ profile, onSwipe }: SwipeCardProps) => {
+const SwipeCard = ({ profile, onSwipe, currentUserSharesGPA = false }: SwipeCardProps) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -114,10 +117,22 @@ const SwipeCard = ({ profile, onSwipe }: SwipeCardProps) => {
             <span className="text-sm">{profile.school}</span>
           </div>
           
-          <div className="flex items-center gap-2 text-white/90 mb-3">
+          <div className="flex items-center gap-2 text-white/90 mb-2">
             <Briefcase className="w-4 h-4" />
             <span className="text-sm">{profile.major}</span>
           </div>
+          
+          {/* GPA - Only show if both users opted in */}
+          {currentUserSharesGPA && profile.shareGPA && profile.gpa && (
+            <div className="flex items-center gap-2 text-white/90 mb-3">
+              <GraduationCap className="w-4 h-4" />
+              <span className="text-sm font-medium">GPA: {profile.gpa.toFixed(2)}</span>
+            </div>
+          )}
+          
+          {!currentUserSharesGPA && profile.shareGPA && profile.gpa && (
+            <div className="mb-3" />
+          )}
           
           <p className="text-sm text-white/80 line-clamp-2 mb-3">
             {profile.bio}
