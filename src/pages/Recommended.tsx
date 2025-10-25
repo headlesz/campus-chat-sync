@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { Coffee, BookOpen, Utensils, Music, Dumbbell, Heart, MessageCircle, User, MapPin, Star, Clock, ExternalLink, Users, Calendar, Sparkles, Briefcase, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import VenueDetailModal from "@/components/VenueDetailModal";
+import ClubDetailModal from "@/components/ClubDetailModal";
+import EventDetailModal from "@/components/EventDetailModal";
 
 // Mock venue data - In a real app, this would come from API calls
 // This is where I would use Google Places API or Yelp API with search queries based on user interests
@@ -237,11 +241,23 @@ const mockEvents = [
 
 const Recommended = () => {
   const navigate = useNavigate();
+  const [selectedVenue, setSelectedVenue] = useState<typeof mockVenues[0] | null>(null);
+  const [selectedClub, setSelectedClub] = useState<typeof mockClubs[0] | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<typeof mockEvents[0] | null>(null);
 
   const handleVenueClick = (venueId: string) => {
-    // This is where I would use Google Places API or Yelp API to get detailed venue information
-    // For now, just show a toast or navigate to a detail view
-    console.log(`Venue ${venueId} clicked`);
+    const venue = mockVenues.find(v => v.id === venueId);
+    if (venue) setSelectedVenue(venue);
+  };
+
+  const handleClubClick = (clubId: string) => {
+    const club = mockClubs.find(c => c.id === clubId);
+    if (club) setSelectedClub(club);
+  };
+
+  const handleEventClick = (eventId: string) => {
+    const event = mockEvents.find(e => e.id === eventId);
+    if (event) setSelectedEvent(event);
   };
 
   return (
@@ -416,7 +432,7 @@ const Recommended = () => {
                   <Card
                     key={club.id}
                     className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                    onClick={() => console.log(`Club ${club.id} clicked`)}
+                    onClick={() => handleClubClick(club.id)}
                   >
                     <div className="flex flex-col sm:flex-row">
                       {/* Image */}
@@ -525,7 +541,7 @@ const Recommended = () => {
                   <Card
                     key={event.id}
                     className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                    onClick={() => console.log(`Event ${event.id} clicked`)}
+                    onClick={() => handleEventClick(event.id)}
                   >
                     <div className="flex flex-col sm:flex-row">
                       {/* Image */}
@@ -663,6 +679,28 @@ const Recommended = () => {
           </button>
         </div>
       </div>
+
+      {/* Modals */}
+      {selectedVenue && (
+        <VenueDetailModal
+          venue={selectedVenue}
+          onClose={() => setSelectedVenue(null)}
+        />
+      )}
+
+      {selectedClub && (
+        <ClubDetailModal
+          club={selectedClub}
+          onClose={() => setSelectedClub(null)}
+        />
+      )}
+
+      {selectedEvent && (
+        <EventDetailModal
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
     </div>
   );
 };
