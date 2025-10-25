@@ -1,6 +1,5 @@
 import { ArrowLeft, Bell, Lock, Eye, Heart, Shield, HelpCircle, LogOut, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -8,11 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { useUser } from "@/contexts/UserContext";
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
-  const [shareGPA, setShareGPA] = useState(false);
-  const [gpa, setGPA] = useState("3.80");
+  const { shareGPA, setShareGPA, gpa, setGPA } = useUser();
 
   const handleLogout = () => {
     toast.success("Logged out successfully");

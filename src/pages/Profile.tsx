@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUser } from "@/contexts/UserContext";
 
 // Mock user data - in a real app this would come from authentication/database
 const mockUser = {
@@ -19,12 +20,11 @@ const mockUser = {
     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400",
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
   ],
-  gpa: 3.8,
-  shareGPA: false, // Default to not sharing
 };
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { shareGPA, gpa } = useUser();
 
   const handleEditProfile = () => {
     // In a real app, this would navigate to an edit profile page
@@ -103,11 +103,11 @@ const Profile = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">GPA</span>
-                <span className="font-medium">{mockUser.gpa.toFixed(2)}</span>
+                <span className="font-medium">{parseFloat(gpa).toFixed(2)}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Sharing Status:</span>
-                {mockUser.shareGPA ? (
+                {shareGPA ? (
                   <Badge variant="default" className="text-xs">
                     Visible to others who opted in
                   </Badge>

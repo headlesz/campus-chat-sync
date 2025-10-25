@@ -4,6 +4,7 @@ import MatchModal from "@/components/MatchModal";
 import { Briefcase, Heart, MessageCircle, User, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useUser } from "@/contexts/UserContext";
 
 type Mode = "dating" | "networking";
 
@@ -46,17 +47,13 @@ const mockProfiles = [
   },
 ];
 
-// Mock current user data - in a real app this would come from authentication
-const mockCurrentUser = {
-  shareGPA: true, // Current user has opted in to share GPA
-};
-
 const Discover = () => {
   const [mode, setMode] = useState<Mode>("dating");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<typeof mockProfiles[0] | null>(null);
   const navigate = useNavigate();
+  const { shareGPA } = useUser();
 
   const handleSwipe = (direction: "left" | "right") => {
     if (direction === "right") {
@@ -148,9 +145,10 @@ const Discover = () => {
 
             {/* Active card */}
             <SwipeCard
+              key={currentProfile.id}
               profile={currentProfile}
               onSwipe={handleSwipe}
-              currentUserSharesGPA={mockCurrentUser.shareGPA}
+              currentUserSharesGPA={shareGPA}
             />
           </div>
         ) : (
