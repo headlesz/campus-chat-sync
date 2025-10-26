@@ -7,8 +7,8 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Auto-redirect to auth page
-    navigate("/auth");
+    // Auto-redirect to chat demo for testing
+    navigate("/chat-demo");
   }, [navigate]);
 
   return (

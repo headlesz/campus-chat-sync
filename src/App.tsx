@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import PostAuth from "./pages/PostAuth";
+import ChatDemo from "./pages/ChatDemo";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,7 @@ const App = () => (
                   </ProtectedRoute>
                 }
               />
+              <Route path="/chat-demo" element={<ChatDemo />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
