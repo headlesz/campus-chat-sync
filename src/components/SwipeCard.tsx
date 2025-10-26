@@ -16,9 +16,10 @@ interface SwipeCardProps {
   };
   onSwipe: (direction: "left" | "right") => void;
   currentUserSharesGPA?: boolean;
+  mode?: "dating" | "friends";
 }
 
-const SwipeCard = ({ profile, onSwipe, currentUserSharesGPA = false }: SwipeCardProps) => {
+const SwipeCard = ({ profile, onSwipe, currentUserSharesGPA = false, mode = "dating" }: SwipeCardProps) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -160,14 +161,22 @@ const SwipeCard = ({ profile, onSwipe, currentUserSharesGPA = false }: SwipeCard
       <div className="flex items-center justify-center gap-6 mt-6">
         <button
           onClick={() => handleButtonSwipe("left")}
-          className="w-16 h-16 rounded-full bg-card border-2 border-destructive text-destructive hover:bg-destructive hover:text-white transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+          className={
+            mode === "friends"
+              ? "w-16 h-16 rounded-full bg-white border-2 border-blue-300 text-blue-500 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+              : "w-16 h-16 rounded-full bg-card border-2 border-destructive text-destructive hover:bg-destructive hover:text-white transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+          }
         >
           <X className="w-8 h-8" />
         </button>
 
         <button
           onClick={() => handleButtonSwipe("right")}
-          className="w-16 h-16 rounded-full bg-primary border-2 border-primary text-white hover:bg-primary-hover transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+          className={
+            mode === "friends"
+              ? "w-16 h-16 rounded-full bg-blue-500 border-2 border-blue-500 text-white hover:bg-blue-600 transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+              : "w-16 h-16 rounded-full bg-primary border-2 border-primary text-white hover:bg-primary-hover transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+          }
         >
           <Heart className="w-7 h-7" />
         </button>

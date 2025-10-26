@@ -1,12 +1,16 @@
 import { useState } from "react";
 import SwipeCard from "@/components/SwipeCard";
 import MatchModal from "@/components/MatchModal";
+<<<<<<< Updated upstream
 import { Briefcase, Heart, MessageCircle, User, MapPin } from "lucide-react";
+=======
+import { Heart, Users } from "lucide-react";
+>>>>>>> Stashed changes
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useUser } from "@/contexts/UserContext";
 
-type Mode = "dating" | "networking";
+type Mode = "dating" | "friends";
 
 const mockProfiles = [
   {
@@ -53,7 +57,11 @@ const Discover = () => {
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<typeof mockProfiles[0] | null>(null);
   const navigate = useNavigate();
+<<<<<<< Updated upstream
   const { shareGPA } = useUser();
+=======
+  const isDating = mode === "dating";
+>>>>>>> Stashed changes
 
   const handleSwipe = (direction: "left" | "right") => {
     if (direction === "right") {
@@ -95,33 +103,44 @@ const Discover = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header with Mode Toggle */}
-      <div className="bg-card border-b border-border px-6 py-4 sticky top-0 z-10">
+      <div
+        className={`px-6 py-4 sticky top-0 z-10 transition-colors duration-300 ${
+          isDating ? "bg-pink-300" : "bg-blue-300"
+        }`}
+      >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-2xl font-bold">CampusMatch</h1>
-          
-          <div className="flex items-center gap-2 bg-muted rounded-full p-1">
-            <button
-              onClick={() => setMode("dating")}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${
-                mode === "dating"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+          <h1 className="text-2xl font-bold text-black">CampusMatch</h1>
+
+          {/* Sliding Toggle */}
+          <div className="relative bg-white/20 backdrop-blur rounded-full p-1 w-[260px]">
+            {/* Slider */}
+            <div
+              className={`absolute top-1 bottom-1 w-[126px] rounded-full transition-all duration-300 ${
+                isDating ? "left-1 bg-pink-500" : "left-[131px] bg-blue-500"
               }`}
-            >
-              <Heart className="w-4 h-4" />
-              Dating
-            </button>
-            <button
-              onClick={() => setMode("networking")}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${
-                mode === "networking"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Briefcase className="w-4 h-4" />
-              Networking
-            </button>
+              style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.15)" }}
+            />
+            {/* Options */}
+            <div className="relative grid grid-cols-2 gap-0">
+              <button
+                onClick={() => setMode("dating")}
+                className={`z-10 flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium transition-colors ${
+                  isDating ? "text-white" : "text-black/80"
+                }`}
+              >
+                <Heart className="w-4 h-4" />
+                Dating
+              </button>
+              <button
+                onClick={() => setMode("friends")}
+                className={`z-10 flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium transition-colors ${
+                  !isDating ? "text-white" : "text-black/80"
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                Friends
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -148,7 +167,12 @@ const Discover = () => {
               key={currentProfile.id}
               profile={currentProfile}
               onSwipe={handleSwipe}
+<<<<<<< Updated upstream
               currentUserSharesGPA={shareGPA}
+=======
+              currentUserSharesGPA={mockCurrentUser.shareGPA}
+              mode={mode}
+>>>>>>> Stashed changes
             />
           </div>
         ) : (
@@ -170,15 +194,25 @@ const Discover = () => {
       )}
 
       {/* Bottom Navigation */}
+<<<<<<< Updated upstream
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-around">
           <button className="flex flex-col items-center gap-1 text-foreground">
+=======
+      <div
+        className={`fixed bottom-0 left-0 right-0 px-6 py-4 transition-colors duration-300 ${
+          isDating ? "bg-pink-300" : "bg-blue-300"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-around text-black">
+          <button className="flex flex-col items-center gap-1 text-black/90 hover:text-black transition-colors">
+>>>>>>> Stashed changes
             <Heart className="w-6 h-6" />
             <span className="text-xs font-medium">Discover</span>
           </button>
           <button
             onClick={() => navigate("/matches")}
-            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="flex flex-col items-center gap-1 text-black/90 hover:text-black transition-colors"
           >
             <MessageCircle className="w-6 h-6" />
             <span className="text-xs font-medium">Matches</span>
@@ -192,7 +226,7 @@ const Discover = () => {
           </button>
           <button
             onClick={() => navigate("/profile")}
-            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="flex flex-col items-center gap-1 text-black/90 hover:text-black transition-colors"
           >
             <User className="w-6 h-6" />
             <span className="text-xs font-medium">Profile</span>
