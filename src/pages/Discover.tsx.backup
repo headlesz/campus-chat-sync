@@ -32,12 +32,12 @@ const mockProfiles = [
     name: "Jamie",
     age: 21,
     school: "Stanford University",
-    major: "Computer Science",
+    major: "AI & Machine Learning",
     graduationYear: 2025,
     mode: "dating" as const,
     bio: "Passionate about technology and making meaningful connections. Love hiking and exploring new cafes.",
     photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600",
-    interests: ["Technology", "Hiking", "Coffee"],
+    interests: ["AI", "Hiking", "Photography"],
     gpa: 3.9,
     shareGPA: true,
   },
@@ -46,12 +46,12 @@ const mockProfiles = [
     name: "Morgan",
     age: 22,
     school: "UC Berkeley",
-    major: "Art",
+    major: "Product Design",
     graduationYear: 2024,
     mode: "dating" as const,
     bio: "Designer by day, chef by night. Always looking for the next great adventure or coffee shop.",
     photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600",
-    interests: ["Art", "Cooking", "Travel"],
+    interests: ["Design", "Cooking", "Travel"],
     gpa: 3.7,
     shareGPA: true,
   },
@@ -60,56 +60,14 @@ const mockProfiles = [
     name: "Taylor",
     age: 20,
     school: "MIT",
-    major: "Engineering",
+    major: "Computer Science",
     graduationYear: 2026,
     mode: "friends" as const,
     bio: "Building the future one line of code at a time. When I'm not coding, you'll find me at the climbing gym.",
     photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600",
-    interests: ["Technology", "Fitness", "Music"],
+    interests: ["Coding", "Rock Climbing", "Music"],
     gpa: 3.85,
-    shareGPA: false,
-  },
-  {
-    id: "4",
-    name: "Alex",
-    age: 23,
-    school: "Harvard University",
-    major: "Business",
-    graduationYear: 2024,
-    mode: "friends" as const,
-    bio: "Entrepreneur and startup enthusiast. Looking for co-founders and networking opportunities.",
-    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600",
-    interests: ["Entrepreneurship", "Coffee", "Fitness"],
-    gpa: 3.8,
-    shareGPA: true,
-  },
-  {
-    id: "5",
-    name: "Sam",
-    age: 19,
-    school: "Yale University",
-    major: "Psychology",
-    graduationYear: 2027,
-    mode: "dating" as const,
-    bio: "Psychology student who loves understanding people. Enjoy reading, hiking, and deep conversations.",
-    photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600",
-    interests: ["Reading", "Hiking", "Research"],
-    gpa: 3.6,
-    shareGPA: true,
-  },
-  {
-    id: "6",
-    name: "Jordan",
-    age: 24,
-    school: "Columbia University",
-    major: "Medicine",
-    graduationYear: 2025,
-    mode: "friends" as const,
-    bio: "Medical student passionate about healthcare innovation. Love volunteering and helping others.",
-    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600",
-    interests: ["Research", "Volunteering", "Fitness"],
-    gpa: 3.9,
-    shareGPA: true,
+    shareGPA: false, // This user hasn't opted in to share
   },
 ];
 
@@ -205,33 +163,23 @@ const Discover = () => {
     }
   };
 
-  // Apply filters with mock data filtering
+  // Apply filters with Elasticsearch Labs
   const handleApplyFilters = async (filters: FilterCriteria) => {
     setIsLoading(true);
     setActiveFilters(filters);
     try {
-      console.log('Applying filters...');
-      
-      // First try Elasticsearch Labs
-      try {
-        const searchResults = await DiscoveryService.searchProfiles(filters, 'current-user-id');
-        if (searchResults && searchResults.length > 0) {
-          setProfiles(searchResults);
-          setCurrentIndex(0);
-          toast.success(`Found ${searchResults.length} matches`);
-          console.log(`Applied filters: ${searchResults.length} results`);
-        }
-      } catch (esError) {
-        console.log('Elasticsearch Labs not available, using mock data filtering');
+      console.log('Applying filters with Elasticsearch Labs...');
+      const searchResults = await DiscoveryService.searchProfiles(filters, 'current-user-id');
+      if (searchResults && searchResults.length > 0) {
+        setProfiles(searchResults);
+        setCurrentIndex(0);
+        toast.success(`Found ${searchResults.length} matches`);
+        console.log(`Applied filters: ${searchResults.length} results`);
+      } else {
+        console.log('No results from Elasticsearch Labs, using mock data');
+        await loadMockProfiles();
+        toast.info('Using mock data - no Elasticsearch results found');
       }
-      
-      // Fallback to mock data filtering
-      const filteredProfiles = filterMockProfiles(filters);
-      setProfiles(filteredProfiles);
-      setCurrentIndex(0);
-      toast.success(`Found ${filteredProfiles.length} matches`);
-      console.log(`Applied filters to mock data: ${filteredProfiles.length} results`);
-      
     } catch (error) {
       console.error('Error applying filters:', error);
       await loadMockProfiles();
@@ -241,88 +189,11 @@ const Discover = () => {
     }
   };
 
-  // Filter mock profiles based on criteria
-  const filterMockProfiles = (filters: FilterCriteria): UserProfile[] => {
-    let filtered = mockProfiles.map(profile => ({
-      id: profile.id,
-      name: profile.name,
-      age: profile.age,
-      major: profile.major,
-      graduationYear: profile.graduationYear,
-      interests: profile.interests,
-      mode: profile.mode as 'dating' | 'friends',
-      gpa: profile.gpa,
-      school: profile.school,
-      location: { lat: 37.7749, lon: -122.4194 },
-      photo: profile.photo,
-      bio: profile.bio
-    }));
-
-    // Filter by mode
-    if (filters.mode !== 'both') {
-      filtered = filtered.filter(profile => profile.mode === filters.mode);
-    }
-
-    // Filter by major
-    if (filters.majors && filters.majors.length > 0) {
-      filtered = filtered.filter(profile => 
-        filters.majors!.some(major => 
-          profile.major === major
-        )
-      );
-    }
-
-    // Filter by graduation year range
-    if (filters.graduationYearRange) {
-      const [minYear, maxYear] = filters.graduationYearRange;
-      filtered = filtered.filter(profile => 
-        profile.graduationYear >= minYear && profile.graduationYear <= maxYear
-      );
-    }
-
-    // Filter by age range
-    if (filters.ageRange) {
-      const [minAge, maxAge] = filters.ageRange;
-      filtered = filtered.filter(profile => 
-        profile.age >= minAge && profile.age <= maxAge
-      );
-    }
-
-    // Filter by GPA range
-    if (filters.gpaRange) {
-      const [minGPA, maxGPA] = filters.gpaRange;
-      filtered = filtered.filter(profile => 
-        profile.gpa >= minGPA && profile.gpa <= maxGPA
-      );
-    }
-
-    // Filter by interests
-    if (filters.interests && filters.interests.length > 0) {
-      filtered = filtered.filter(profile => 
-        filters.interests!.some(interest => 
-          profile.interests.includes(interest)
-        )
-      );
-    }
-
-    return filtered;
-  };
-
   // Clear filters
   const handleClearFilters = async () => {
     setActiveFilters(null);
     try {
-      // Try to reload from Elasticsearch Labs first
-      try {
-        await loadProfiles();
-        toast.success('Filters cleared');
-        return;
-      } catch (esError) {
-        console.log('Elasticsearch Labs not available, clearing mock data filters');
-      }
-      
-      // Fallback to mock data
-      await loadMockProfiles();
+      await loadProfiles();
       toast.success('Filters cleared');
     } catch (error) {
       console.error('Error clearing filters:', error);
@@ -415,9 +286,7 @@ const Discover = () => {
             <button
               onClick={() => setShowFilters(true)}
               className={`p-2 rounded-full transition-colors ${
-                activeFilters 
-                  ? (isDating ? 'bg-primary/20 text-primary' : 'bg-accent/20 text-accent')
-                  : 'hover:bg-white/20 text-foreground'
+                activeFilters ? 'bg-primary/20 text-primary' : 'hover:bg-white/20 text-foreground'
               }`}
               title="Filter matches"
             >
@@ -523,7 +392,6 @@ const Discover = () => {
         onClose={() => setShowFilters(false)}
         onApplyFilters={handleApplyFilters}
         onClearFilters={handleClearFilters}
-        mode={mode}
       />
     </div>
   );
