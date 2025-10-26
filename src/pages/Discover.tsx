@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SwipeCard from "@/components/SwipeCard";
 import MatchModal from "@/components/MatchModal";
+import { Heart, MessageCircle, User, MapPin, Sparkles, Users } from "lucide-react";
 import { Heart, Users, MessageCircle, User, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -48,12 +49,11 @@ const mockProfiles = [
 ];
 
 const Discover = () => {
-  const [mode, setMode] = useState<Mode>("dating");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<typeof mockProfiles[0] | null>(null);
   const navigate = useNavigate();
-  const { shareGPA } = useUser();
+  const { shareGPA, mode, setMode } = useUser();
   const isDating = mode === "dating";
   const mockCurrentUser = { shareGPA: false };
 
@@ -205,7 +205,7 @@ const Discover = () => {
             onClick={() => navigate("/recommended")}
             className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
-            <MapPin className="w-6 h-6" />
+            <Sparkles className="w-6 h-6" />
             <span className="text-xs font-medium">Recommended</span>
           </button>
           <button
