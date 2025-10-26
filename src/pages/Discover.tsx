@@ -98,18 +98,18 @@ const Discover = () => {
       {/* Header with Mode Toggle */}
       <div
         className={`px-6 py-4 sticky top-0 z-10 transition-colors duration-300 ${
-          isDating ? "bg-pink-300" : "bg-blue-300"
+          isDating ? "bg-primary/20" : "bg-accent/20"
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-black">CampusMatch</h1>
+          <h1 className="text-2xl font-bold text-foreground">CampusMatch</h1>
 
           {/* Sliding Toggle */}
           <div className="relative bg-white/20 backdrop-blur rounded-full p-1 w-[260px]">
             {/* Slider */}
             <div
               className={`absolute top-1 bottom-1 w-[126px] rounded-full transition-all duration-300 ${
-                isDating ? "left-1 bg-pink-500" : "left-[131px] bg-blue-500"
+                isDating ? "left-1 bg-primary" : "left-[131px] bg-accent"
               }`}
               style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.15)" }}
             />
@@ -185,17 +185,17 @@ const Discover = () => {
       {/* Bottom Navigation */}
       <div
         className={`fixed bottom-0 left-0 right-0 px-6 py-4 transition-colors duration-300 ${
-          isDating ? "bg-pink-300" : "bg-blue-300"
+          isDating ? "bg-primary/20" : "bg-accent/20"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-around text-black">
-          <button className="flex flex-col items-center gap-1 text-black/90 hover:text-black transition-colors">
+        <div className="max-w-7xl mx-auto flex items-center justify-around text-foreground">
+          <button className="flex flex-col items-center gap-1 text-foreground/90 hover:text-foreground transition-colors">
             <Heart className="w-6 h-6" />
             <span className="text-xs font-medium">Discover</span>
           </button>
           <button
             onClick={() => navigate("/matches")}
-            className="flex flex-col items-center gap-1 text-black/90 hover:text-black transition-colors"
+            className="flex flex-col items-center gap-1 text-foreground/90 hover:text-foreground transition-colors"
           >
             <MessageCircle className="w-6 h-6" />
             <span className="text-xs font-medium">Matches</span>

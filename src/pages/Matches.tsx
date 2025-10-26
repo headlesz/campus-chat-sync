@@ -53,37 +53,45 @@ const Matches = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <div className="bg-card border-b border-border px-6 py-4 sticky top-0 z-10">
+      <div className={`px-6 py-4 sticky top-0 z-10 transition-colors duration-300 ${
+        mode === "dating" ? "bg-primary/20" : "bg-accent/20"
+      }`}>
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-2xl font-bold">Messages</h1>
+          <h1 className="text-2xl font-bold text-foreground">Messages</h1>
           <p className="text-sm text-muted-foreground mt-1">
             {mockMatches.length} match{mockMatches.length !== 1 ? "es" : ""}
           </p>
           
-          {/* Mode Toggle */}
-          <div className="flex gap-2 mt-4">
-            <button
-              onClick={() => setMode("dating")}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
-                mode === "dating"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+          {/* Sliding Toggle */}
+          <div className="relative bg-white/20 backdrop-blur rounded-full p-1 w-[260px] mt-4">
+            {/* Slider */}
+            <div
+              className={`absolute top-1 bottom-1 w-[126px] rounded-full transition-all duration-300 ${
+                mode === "dating" ? "left-1 bg-primary" : "left-[131px] bg-accent"
               }`}
-            >
-              <Heart className="w-4 h-4" />
-              Dating
-            </button>
-            <button
-              onClick={() => setMode("friends")}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
-                mode === "friends"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
-            >
-              <Users className="w-4 h-4" />
-              Friends
-            </button>
+              style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.15)" }}
+            />
+            {/* Options */}
+            <div className="relative grid grid-cols-2 gap-0">
+              <button
+                onClick={() => setMode("dating")}
+                className={`z-10 flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium transition-colors ${
+                  mode === "dating" ? "text-primary-foreground" : "text-foreground/80"
+                }`}
+              >
+                <Heart className="w-4 h-4" />
+                Dating
+              </button>
+              <button
+                onClick={() => setMode("friends")}
+                className={`z-10 flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium transition-colors ${
+                  mode === "friends" ? "text-accent-foreground" : "text-foreground/80"
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                Friends
+              </button>
+            </div>
           </div>
         </div>
       </div>

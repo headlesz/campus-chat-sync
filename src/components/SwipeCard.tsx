@@ -163,7 +163,7 @@ const SwipeCard = ({ profile, onSwipe, currentUserSharesGPA = false, mode = "dat
           onClick={() => handleButtonSwipe("left")}
           className={
             mode === "friends"
-              ? "w-16 h-16 rounded-full bg-white border-2 border-blue-300 text-blue-500 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+              ? "w-16 h-16 rounded-full bg-card border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
               : "w-16 h-16 rounded-full bg-card border-2 border-destructive text-destructive hover:bg-destructive hover:text-white transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
           }
         >
@@ -174,8 +174,8 @@ const SwipeCard = ({ profile, onSwipe, currentUserSharesGPA = false, mode = "dat
           onClick={() => handleButtonSwipe("right")}
           className={
             mode === "friends"
-              ? "w-16 h-16 rounded-full bg-blue-500 border-2 border-blue-500 text-white hover:bg-blue-600 transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
-              : "w-16 h-16 rounded-full bg-primary border-2 border-primary text-white hover:bg-primary-hover transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+              ? "w-16 h-16 rounded-full bg-accent border-2 border-accent text-accent-foreground hover:bg-accent/90 transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+              : "w-16 h-16 rounded-full bg-primary border-2 border-primary text-primary-foreground hover:bg-primary-hover transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
           }
         >
           <Heart className="w-7 h-7" />
