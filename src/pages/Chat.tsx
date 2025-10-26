@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Send, Calendar } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import AvailabilityModal from "@/components/AvailabilityModal";
+import { useUser } from "@/contexts/UserContext";
+import { toast } from "sonner";
 
 // Mock match data - in a real app this would come from a backend API
 const allMatches = [
@@ -55,6 +58,8 @@ const Chat = () => {
   const navigate = useNavigate();
   const { matchId } = useParams();
   const [message, setMessage] = useState("");
+  const [showAvailability, setShowAvailability] = useState(false);
+  const { calendarConnected } = useUser();
   
   // Find the match data based on matchId
   const matchData = allMatches.find(m => m.id === matchId) || allMatches[0];
@@ -100,7 +105,16 @@ const Chat = () => {
           </div>
         </div>
 
-        <button className="p-2 hover:bg-muted rounded-full transition-colors">
+        <button 
+          className="p-2 hover:bg-muted rounded-full transition-colors"
+          onClick={() => {
+            if (calendarConnected) {
+              setShowAvailability(true);
+            } else {
+              toast.error("Connect your calendar in Settings to view availability");
+            }
+          }}
+        >
           <Calendar className="w-5 h-5 text-muted-foreground" />
         </button>
       </div>
@@ -172,6 +186,14 @@ const Chat = () => {
           </Button>
         </div>
       </div>
+
+      {/* Availability Modal */}
+      {showAvailability && (
+        <AvailabilityModal
+          matchName={matchData.name}
+          onClose={() => setShowAvailability(false)}
+        />
+      )}
     </div>
   );
 };

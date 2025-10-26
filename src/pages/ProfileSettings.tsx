@@ -1,4 +1,4 @@
-import { ArrowLeft, Bell, Lock, Eye, Heart, Shield, HelpCircle, LogOut, GraduationCap } from "lucide-react";
+import { ArrowLeft, Bell, Lock, Eye, Heart, Shield, HelpCircle, LogOut, GraduationCap, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +11,7 @@ import { useUser } from "@/contexts/UserContext";
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
-  const { shareGPA, setShareGPA, gpa, setGPA } = useUser();
+  const { shareGPA, setShareGPA, gpa, setGPA, calendarConnected, setCalendarConnected } = useUser();
 
   const handleLogout = () => {
     toast.success("Logged out successfully");
@@ -180,6 +180,61 @@ const ProfileSettings = () => {
                   </p>
                 </div>
               </>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Calendar Integration */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Calendar className="w-5 h-5" />
+              Calendar Integration
+            </CardTitle>
+            <CardDescription>
+              Connect your calendar to find mutual availability
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {calendarConnected ? (
+              <div className="flex items-center justify-between p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Calendar className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Google Calendar Connected</p>
+                    <p className="text-sm text-muted-foreground">You can now see mutual availability</p>
+                  </div>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setCalendarConnected(false);
+                    toast.success("Calendar disconnected");
+                  }}
+                >
+                  Disconnect
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Connect your Google Calendar to automatically find times when you and your matches are both free.
+                </p>
+                <Button 
+                  onClick={() => {
+                    // This is where I would use Google Calendar API OAuth flow
+                    toast.success("Calendar connected successfully!");
+                    setCalendarConnected(true);
+                  }}
+                  className="w-full"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Connect to Google Calendar
+                </Button>
+              </div>
             )}
           </CardContent>
         </Card>

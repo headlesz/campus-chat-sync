@@ -37,7 +37,7 @@ const ProfileSetup = () => {
     }
     
     toast.success("Profile saved!");
-    navigate("/discover");
+    navigate("/onboarding/calendar");
   };
 
   return (
