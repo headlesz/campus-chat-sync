@@ -146,7 +146,11 @@ const Chat = () => {
         ))}
 
         {/* Schedule Prompt */}
-        <div className="bg-card border border-border rounded-2xl p-4 max-w-md mx-auto my-6">
+        <div className={`bg-card border rounded-2xl p-4 max-w-md mx-auto my-6 ${
+          matchData.mode === "dating" 
+            ? "border-border" 
+            : "border-accent/20"
+        }`}>
           <div className="flex items-start gap-3">
             <div className={`p-2 rounded-full ${
               matchData.mode === "dating" 

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Mock user data - in a real app this would come from authentication/database
 const mockUser = {
@@ -25,6 +26,7 @@ const mockUser = {
 const Profile = () => {
   const navigate = useNavigate();
   const { shareGPA, gpa } = useUser();
+  const { signOut } = useAuth();
 
   const handleEditProfile = () => {
     // In a real app, this would navigate to an edit profile page
@@ -35,9 +37,13 @@ const Profile = () => {
     navigate("/profile/settings");
   };
 
-  const handleLogout = () => {
-    // In a real app, this would handle logout logic
-    navigate("/auth");
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate("/auth");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (

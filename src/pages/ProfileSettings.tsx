@@ -8,14 +8,22 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
   const { shareGPA, setShareGPA, gpa, setGPA, calendarConnected, setCalendarConnected } = useUser();
+  const { signOut } = useAuth();
 
-  const handleLogout = () => {
-    toast.success("Logged out successfully");
-    navigate("/auth");
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast.success("Logged out successfully");
+      navigate("/auth");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast.error("Failed to log out");
+    }
   };
 
   const handleSave = () => {

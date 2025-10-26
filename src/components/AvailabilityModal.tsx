@@ -97,7 +97,11 @@ const AvailabilityModal = ({ matchName, mode, onClose }: AvailabilityModalProps)
                         <Button
                           size="sm"
                           onClick={() => handleSchedule(daySlot.day, slot.time)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                          className={`opacity-0 group-hover:opacity-100 transition-opacity ${
+                            mode === "dating" 
+                              ? "bg-primary hover:bg-primary-hover text-primary-foreground" 
+                              : "bg-accent hover:bg-accent/90 text-accent-foreground"
+                          }`}
                         >
                           Schedule
                         </Button>
