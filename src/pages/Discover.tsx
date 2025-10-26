@@ -1,12 +1,10 @@
 import { useState } from "react";
 import SwipeCard from "@/components/SwipeCard";
 import MatchModal from "@/components/MatchModal";
-import { Briefcase, Heart, MessageCircle, User, MapPin } from "lucide-react";
+import { Heart, MessageCircle, User, MapPin, Sparkles, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useUser } from "@/contexts/UserContext";
-
-type Mode = "dating" | "networking";
 
 const mockProfiles = [
   {
@@ -48,12 +46,11 @@ const mockProfiles = [
 ];
 
 const Discover = () => {
-  const [mode, setMode] = useState<Mode>("dating");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<typeof mockProfiles[0] | null>(null);
   const navigate = useNavigate();
-  const { shareGPA } = useUser();
+  const { shareGPA, mode, setMode } = useUser();
 
   const handleSwipe = (direction: "left" | "right") => {
     if (direction === "right") {
@@ -112,15 +109,15 @@ const Discover = () => {
               Dating
             </button>
             <button
-              onClick={() => setMode("networking")}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${
-                mode === "networking"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+              onClick={() => setMode("friends")}
+              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                mode === "friends"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
-              <Briefcase className="w-4 h-4" />
-              Networking
+              <Users className="w-4 h-4" />
+              Friends
             </button>
           </div>
         </div>
@@ -187,7 +184,7 @@ const Discover = () => {
             onClick={() => navigate("/recommended")}
             className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
-            <MapPin className="w-6 h-6" />
+            <Sparkles className="w-6 h-6" />
             <span className="text-xs font-medium">Recommended</span>
           </button>
           <button

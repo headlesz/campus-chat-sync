@@ -2,7 +2,7 @@
 
 **Meaningful Connections. Authentic Experiences. Campus Life Reimagined.**
 
-CampusMatch is a dual-mode social platform designed specifically for college students to build genuine connections—whether for dating, networking, or finding their community on campus.
+CampusMatch is a dual-mode social platform designed specifically for college students to build genuine connections—whether for dating, making friends, or finding their community on campus.
 
 ---
 
@@ -13,7 +13,7 @@ Traditional dating apps reduce people to profiles. CampusMatch takes a different
 - **Voice-First Onboarding**: Capture personality and authenticity through voice instead of just photos
 - **Mutual Privacy**: GPA sharing is opt-in for both parties, ensuring fair information exchange
 - **AI-Powered Matching**: Smart recommendations based on interests, conversations, and compatibility
-- **Dual Mode Design**: Seamlessly switch between dating and professional networking contexts
+- **Dual Mode Design**: Seamlessly switch between dating and friend-finding contexts
 
 ### **Campus-Centric Experience**
 We believe meaningful connections happen in real places:
@@ -39,7 +39,7 @@ Landing Page → Voice Introduction → Profile Setup (Interests, Major, GPA opt
 Swipe Interface → Match Modal → Direct Messaging
 ```
 - **Dating Mode**: Find romantic connections with students on campus
-- **Networking Mode**: Connect with peers for professional growth
+- **Friends Mode**: Connect with peers to build friendships and expand your social circle
 - Swipeable cards with rich profiles (photo, bio, interests, academic info)
 - Instant match notifications when both users like each other
 - Option to message immediately or keep swiping
@@ -80,7 +80,7 @@ View Profile → Edit Settings → Privacy Controls
 
 ### **🔄 Dual Mode System**
 - **Dating Mode**: For romantic connections
-- **Networking Mode**: For professional relationships
+- **Friends Mode**: For building friendships and social connections
 - Seamless toggle between contexts
 
 ### **🔒 Privacy-First GPA Sharing**

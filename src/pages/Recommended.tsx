@@ -667,7 +667,7 @@ const Recommended = () => {
             <span className="text-xs font-medium">Matches</span>
           </button>
           <button className="flex flex-col items-center gap-1 text-foreground">
-            <MapPin className="w-6 h-6" />
+            <Sparkles className="w-6 h-6" />
             <span className="text-xs font-medium">Recommended</span>
           </button>
           <button

@@ -1,4 +1,4 @@
-import { Settings, Edit2, LogOut, Heart, MessageCircle, User, GraduationCap, MapPin } from "lucide-react";
+import { Settings, Edit2, LogOut, Heart, MessageCircle, User, GraduationCap, MapPin, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -201,7 +201,7 @@ const Profile = () => {
             onClick={() => navigate("/recommended")}
             className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
-            <MapPin className="w-6 h-6" />
+            <Sparkles className="w-6 h-6" />
             <span className="text-xs font-medium">Recommended</span>
           </button>
           <button className="flex flex-col items-center gap-1 text-foreground">
