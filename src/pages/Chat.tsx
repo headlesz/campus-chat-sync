@@ -130,7 +130,9 @@ const Chat = () => {
               <div
                 className={`rounded-2xl px-4 py-3 ${
                   msg.role === "me"
-                    ? "bg-primary text-primary-foreground"
+                    ? matchData.mode === "dating" 
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-accent text-accent-foreground"
                     : "bg-muted text-foreground"
                 }`}
               >
@@ -146,8 +148,16 @@ const Chat = () => {
         {/* Schedule Prompt */}
         <div className="bg-card border border-border rounded-2xl p-4 max-w-md mx-auto my-6">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-primary/10 rounded-full">
-              <Calendar className="w-5 h-5 text-primary" />
+            <div className={`p-2 rounded-full ${
+              matchData.mode === "dating" 
+                ? "bg-primary/10" 
+                : "bg-accent/10"
+            }`}>
+              <Calendar className={`w-5 h-5 ${
+                matchData.mode === "dating" 
+                  ? "text-primary" 
+                  : "text-accent"
+              }`} />
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-sm mb-1">
@@ -158,7 +168,18 @@ const Chat = () => {
                   ? "Plan a date and coordinate your schedules"
                   : "Schedule a time to discuss opportunities"}
               </p>
-              <Button size="sm" variant="outline" className="w-full">
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="w-full"
+                onClick={() => {
+                  if (calendarConnected) {
+                    setShowAvailability(true);
+                  } else {
+                    toast.error("Connect your calendar in Settings to view availability");
+                  }
+                }}
+              >
                 {matchData.mode === "dating" ? "Schedule a meetup" : "Schedule a meeting"}
               </Button>
             </div>
@@ -191,6 +212,7 @@ const Chat = () => {
       {showAvailability && (
         <AvailabilityModal
           matchName={matchData.name}
+          mode={matchData.mode as "dating" | "friends"}
           onClose={() => setShowAvailability(false)}
         />
       )}

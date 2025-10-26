@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 interface AvailabilityModalProps {
   matchName: string;
+  mode: "dating" | "friends";
   onClose: () => void;
 }
 
@@ -39,7 +40,7 @@ const mockAvailableSlots = [
   },
 ];
 
-const AvailabilityModal = ({ matchName, onClose }: AvailabilityModalProps) => {
+const AvailabilityModal = ({ matchName, mode, onClose }: AvailabilityModalProps) => {
   const handleSchedule = (day: string, time: string) => {
     // This is where I would use Google Calendar API to create calendar event
     toast.success(`Meetup scheduled for ${day} at ${time}!`);
@@ -80,7 +81,11 @@ const AvailabilityModal = ({ matchName, onClose }: AvailabilityModalProps) => {
                     {daySlot.slots.map((slot, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between p-4 border border-border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-all group"
+                        className={`flex items-center justify-between p-4 border border-border rounded-lg transition-all group ${
+                          mode === "dating" 
+                            ? "hover:border-primary/50 hover:bg-muted/50" 
+                            : "hover:border-accent/50 hover:bg-muted/50"
+                        }`}
                       >
                         <div className="flex items-center gap-3">
                           <Clock className="w-4 h-4 text-muted-foreground" />
@@ -117,9 +122,15 @@ const AvailabilityModal = ({ matchName, onClose }: AvailabilityModalProps) => {
 
           {/* Venue Suggestion */}
           {mockAvailableSlots.length > 0 && (
-            <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+            <div className={`mt-6 p-4 border rounded-lg ${
+              mode === "dating" 
+                ? "bg-primary/5 border-primary/20" 
+                : "bg-accent/5 border-accent/20"
+            }`}>
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary mt-0.5" />
+                <MapPin className={`w-5 h-5 mt-0.5 ${
+                  mode === "dating" ? "text-primary" : "text-accent"
+                }`} />
                 <div className="flex-1">
                   <p className="font-semibold text-sm mb-1">Suggested meetup spot</p>
                   <p className="text-sm text-muted-foreground mb-2">
