@@ -2,7 +2,6 @@ import { useState } from "react";
 import SwipeCard from "@/components/SwipeCard";
 import MatchModal from "@/components/MatchModal";
 import { Heart, MessageCircle, User, MapPin, Sparkles, Users } from "lucide-react";
-import { Heart, Users, MessageCircle, User, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useUser } from "@/contexts/UserContext";
