@@ -24,7 +24,7 @@
 3. Click "Add Users"
 4. Add both emails:
    - Your email
-   - `janiadarsh2@gmail.com`
+   - `username@gmail.com`
 5. Save
 
 ### Step 3: Share Calendar Access
@@ -63,7 +63,7 @@
 ## 📅 How It Works:
 
 - **Your calendar**: Fetched from your Google account (primary)
-- **AI date calendar**: Fetched from `janiadarsh2@gmail.com`
+- **AI date calendar**: Fetched from `username@gmail.com`
 - **Claude analyzes**: Both calendars to find free slots
 - **Suggests**: Top 3-5 common free times in the next week
 - **Smart scheduling**: Only suggests 9 AM - 8 PM slots
