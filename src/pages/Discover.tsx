@@ -1,11 +1,7 @@
 import { useState } from "react";
 import SwipeCard from "@/components/SwipeCard";
 import MatchModal from "@/components/MatchModal";
-<<<<<<< Updated upstream
-import { Briefcase, Heart, MessageCircle, User, MapPin } from "lucide-react";
-=======
-import { Heart, Users } from "lucide-react";
->>>>>>> Stashed changes
+import { Heart, Users, MessageCircle, User, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useUser } from "@/contexts/UserContext";
@@ -57,11 +53,9 @@ const Discover = () => {
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<typeof mockProfiles[0] | null>(null);
   const navigate = useNavigate();
-<<<<<<< Updated upstream
   const { shareGPA } = useUser();
-=======
   const isDating = mode === "dating";
->>>>>>> Stashed changes
+  const mockCurrentUser = { shareGPA: false };
 
   const handleSwipe = (direction: "left" | "right") => {
     if (direction === "right") {
@@ -167,12 +161,8 @@ const Discover = () => {
               key={currentProfile.id}
               profile={currentProfile}
               onSwipe={handleSwipe}
-<<<<<<< Updated upstream
-              currentUserSharesGPA={shareGPA}
-=======
               currentUserSharesGPA={mockCurrentUser.shareGPA}
               mode={mode}
->>>>>>> Stashed changes
             />
           </div>
         ) : (
@@ -194,11 +184,6 @@ const Discover = () => {
       )}
 
       {/* Bottom Navigation */}
-<<<<<<< Updated upstream
-      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-around">
-          <button className="flex flex-col items-center gap-1 text-foreground">
-=======
       <div
         className={`fixed bottom-0 left-0 right-0 px-6 py-4 transition-colors duration-300 ${
           isDating ? "bg-pink-300" : "bg-blue-300"
@@ -206,7 +191,6 @@ const Discover = () => {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-around text-black">
           <button className="flex flex-col items-center gap-1 text-black/90 hover:text-black transition-colors">
->>>>>>> Stashed changes
             <Heart className="w-6 h-6" />
             <span className="text-xs font-medium">Discover</span>
           </button>
