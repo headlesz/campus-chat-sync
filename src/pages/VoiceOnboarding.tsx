@@ -24,14 +24,21 @@ const VoiceOnboarding = () => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [name, setName] = useState<string>("there");
-  const [collectedData, setCollectedData] = useState<any>({});
+  const [collectedData, setCollectedData] = useState<any>({
+    interests: [],
+    partnerGender: '',
+    partnerInterests: [],
+    qualities: []
+  });
   const [isComplete, setIsComplete] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const navigate = useNavigate();
   const { setDraft } = useOnboarding();
   const recogRef = useRef<any>(null);
   const recognizingRef = useRef<boolean>(false);
   const shouldContinueRef = useRef<boolean>(false);
   const isProcessingRef = useRef<boolean>(false);
+  const conversationHistoryRef = useRef<Msg[]>([]);
 
   useEffect(() => {
     // Load name from Supabase user metadata
@@ -54,10 +61,17 @@ const VoiceOnboarding = () => {
     })();
   }, []);
 
+  const QUESTIONS = [
+    "What hobbies or activities do you enjoy?",
+    "What gender are you interested in dating?",
+    "What interests should your match have?",
+    "What qualities do you value in a partner?"
+  ];
+
   useEffect(() => {
-    // Initial greeting
+    // Initial greeting + first question
     if (messages.length === 0 && name) {
-      const greeting = `Hi ${name}! I'm here to help set up your dating profile. Let's start - what are some hobbies or activities you enjoy?`;
+      const greeting = `Hi ${name}! I'm here to help set up your dating profile. ${QUESTIONS[0]}`;
       pushAssistant(greeting, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,6 +119,12 @@ const VoiceOnboarding = () => {
 
   const speak = (text: string) => {
     try {
+      // Stop listening while speaking to avoid picking up own voice
+      const wasListening = isListening;
+      if (wasListening) {
+        stopListening();
+      }
+      
       const u = new SpeechSynthesisUtterance(text);
       const v = pickVoice();
       if (v) u.voice = v;
@@ -112,38 +132,45 @@ const VoiceOnboarding = () => {
       u.pitch = 1.12;
       u.rate = 0.98;
       u.volume = 1.0;
+      
+      // Restart listening after speaking finishes
+      u.onend = () => {
+        if (wasListening) {
+          setTimeout(() => startListening(), 500);
+        }
+      };
+      
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(u);
     } catch {}
   };
 
   const pushAssistant = (content: string, say = false) => {
-    setMessages((m) => [...m, { role: "assistant", content }]);
+    const msg = { role: "assistant" as const, content };
+    conversationHistoryRef.current = [...conversationHistoryRef.current, msg];
+    setMessages((m) => [...m, msg]);
     if (say) speak(content);
   };
 
-  const pushUser = (content: string) => setMessages((m) => [...m, { role: "user", content }]);
+  const pushUser = (content: string) => {
+    const msg = { role: "user" as const, content };
+    conversationHistoryRef.current = [...conversationHistoryRef.current, msg];
+    setMessages((m) => [...m, msg]);
+  };
 
-  const SYSTEM_PROMPT = `You are a dating app onboarding assistant for ${name}.
+  const SYSTEM_PROMPT = `You are helping collect dating profile info. Ask these 4 questions in order, ONE at a time:
 
-STRICT SEQUENCE - Ask questions in this exact order:
-1. Their interests → ALREADY ASKED in first message
-2. Partner gender preference → Ask: "What gender are you interested in dating?"
-3. Partner's interests → Ask: "What interests/hobbies should your ideal match have?"
-4. Qualities → Ask: "What personality qualities do you value most?"
+1. "What hobbies or activities do you enjoy?"
+2. "What gender are you interested in dating?"
+3. "What interests should your match have?"
+4. "What qualities do you value in a partner?"
 
-CRITICAL RULES:
-- Read the conversation history carefully
-- Count how many questions have been answered (not asked)
-- If user answered question 2, move to question 3
-- If user answered question 3, move to question 4
-- NEVER ask the same question twice
-- Keep responses under 20 words
+CRITICAL: Look at YOUR previous assistant messages. See which questions YOU already asked. Ask the NEXT question you haven't asked yet. DO NOT REPEAT.
 
-When you have ALL 4 answers, respond ONLY with:
-COMPLETE: {"interests": ["x","y"], "partnerGender": "male/female/non-binary/no-preference", "partnerInterests": ["x","y"], "qualities": ["x","y"]}
+After user answers, say "Got it!" or "Perfect!" then ask the next question.
 
-Otherwise, acknowledge their answer briefly and ask the NEXT unanswered question.`;
+After all 4 answered, output:
+COMPLETE: {"interests":["x","y"],"partnerGender":"male/female/non-binary/no-preference","partnerInterests":["x","y"],"qualities":["x","y"]}`;
 
   const handleProcessText = async (text: string) => {
     if (!text.trim() || isProcessingRef.current) return;
@@ -152,48 +179,40 @@ Otherwise, acknowledge their answer briefly and ask the NEXT unanswered question
     pushUser(text);
 
     try {
-      // Build conversation history for Claude
-      const history = [...messages, { role: 'user' as const, content: text }];
+      // Use the ref which has the up-to-date history
+      const fullHistory = conversationHistoryRef.current;
       
-      const response = await chatWithClaude(history, SYSTEM_PROMPT);
+      console.log('📤 Full history being sent:', fullHistory.length, fullHistory);
+      const response = await chatWithClaude(fullHistory, SYSTEM_PROMPT);
+      console.log('📥 Claude response:', response);
       
-      if (!response) {
+      if (!response || !response.trim()) {
         pushAssistant("Sorry, I didn't catch that. Could you try again?", true);
+        isProcessingRef.current = false;
         return;
       }
 
-      // Check if Claude signals completion
       if (response.startsWith('COMPLETE:')) {
-        try {
-          const dataStr = response.replace('COMPLETE:', '').trim();
-          console.log('📋 Claude completion response:', dataStr);
-          const data = JSON.parse(dataStr);
-          console.log('✅ Parsed data:', data);
-          setCollectedData(data);
-          setIsComplete(true);
-          
-          // Save to backend
-          await upsertProfile({
-            interests: data.interests,
-            partner_gender: data.partnerGender,
-            partner_interests: data.partnerInterests,
-            qualities: data.qualities,
-          });
-          
-          setDraft(data);
-          pushAssistant("Perfect! I've got everything. Taking you to your dashboard now.", true);
-          setTimeout(() => navigate("/dashboard"), 1500);
-        } catch (e) {
-          console.error('❌ Failed to parse completion data:', e);
-          console.error('Raw response:', response);
-          pushAssistant(response, true);
-        }
+        const dataStr = response.replace('COMPLETE:', '').trim();
+        const data = JSON.parse(dataStr);
+        setCollectedData(data);
+        setIsComplete(true);
+        
+        await upsertProfile({
+          interests: data.interests,
+          partner_gender: data.partnerGender,
+          partner_interests: data.partnerInterests,
+          qualities: data.qualities,
+        });
+        
+        setDraft(data);
+        pushAssistant("Perfect! I've got everything. Taking you to your dashboard now.", true);
+        setTimeout(() => navigate("/dashboard"), 1500);
       } else {
-        // Continue conversation
         pushAssistant(response, true);
       }
     } catch (error) {
-      console.error('Conversation error:', error);
+      console.error('❌ Error:', error);
       pushAssistant("Sorry, something went wrong. Could you repeat that?", true);
     } finally {
       isProcessingRef.current = false;

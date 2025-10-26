@@ -30,7 +30,7 @@ app.post('/api/claude', async (req, res) => {
       },
       body: JSON.stringify({
         model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 200,
+        max_tokens: 2048,
         system: system || undefined,
         messages: messages,
       }),

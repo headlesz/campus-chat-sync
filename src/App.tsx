@@ -17,6 +17,7 @@ import Recommended from "./pages/Recommended";
 import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import ProfileSettings from "./pages/ProfileSettings";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/onboarding/voice" element={<VoiceOnboarding />} />
               <Route path="/onboarding/profile" element={<ProfileSetup />} />
               <Route path="/onboarding/calendar" element={<CalendarOnboarding />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/discover" element={<Discover />} />
               <Route path="/matches" element={<Matches />} />
               <Route path="/recommended" element={<Recommended />} />
