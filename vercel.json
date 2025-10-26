@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "VITE_ANTHROPIC_API_KEY": "@anthropic-api-key"
+  }
+}

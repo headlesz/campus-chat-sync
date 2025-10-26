@@ -1,46 +1,101 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import { supabase, isEduEmail } from "@/lib/supabase";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [step, setStep] = useState<"email" | "otp">("email");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [step, setStep] = useState<"signup" | "link-sent">("signup");
   const [loading, setLoading] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(true);
   const navigate = useNavigate();
+  const { draft } = useOnboarding();
 
-  const handleSendCode = async (e: React.FormEvent) => {
+  // Check for existing session on mount
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) navigate("/post-auth");
+    };
+    checkSession();
+  }, [navigate]);
+
+  const handleSendLink = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error("Please enter a valid email address");
+    
+    // Validate .edu email
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    
+    if (!isEduEmail(email)) {
+      toast.error("Please use a valid .edu email address");
       return;
     }
 
+    // Validate name and age for new users
+    if (isNewUser) {
+      if (!name.trim()) {
+        toast.error("Please enter your name");
+        return;
+      }
+      if (!age || parseInt(age) < 18 || parseInt(age) > 100) {
+        toast.error("Please enter a valid age (18-100)");
+        return;
+      }
+    }
+
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      // Send Magic Link via Supabase
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: isNewUser,
+          emailRedirectTo: `${window.location.origin}/post-auth`,
+          data: { name, age: parseInt(age) },
+        },
+      });
+
+      if (error) throw error;
+
+      setStep("link-sent");
+      toast.success(`Magic link sent to ${email}`);
+    } catch (error: any) {
+      console.error("Error sending OTP:", error);
+      toast.error(error.message || "Failed to send magic link");
+    } finally {
       setLoading(false);
-      setStep("otp");
-      toast.success(`Code sent to ${email}`);
-    }, 1000);
+    }
   };
 
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (otp.length !== 6) {
-      toast.error("Please enter a 6-digit code");
-      return;
-    }
-
+  const handleResendCode = async () => {
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: isNewUser,
+          emailRedirectTo: `${window.location.origin}/post-auth`,
+        },
+      });
+
+      if (error) throw error;
+      toast.success("Magic link re-sent!");
+    } catch (error: any) {
+      console.error("Error resending Magic Link:", error);
+      toast.error(error.message || "Failed to resend link");
+    } finally {
       setLoading(false);
-      toast.success("Welcome to CampusMatch!");
-      navigate("/onboarding/voice");
-    }, 1000);
+    }
   };
 
   return (
@@ -54,24 +109,65 @@ const Auth = () => {
 
         {/* Auth Form Card */}
         <div className="bg-card rounded-2xl shadow-lg p-8 border border-border">
-          {step === "email" ? (
-            <form onSubmit={handleSendCode} className="space-y-6">
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-foreground">
-                  Email address
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@university.edu"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="h-12"
-                  disabled={loading}
-                />
-                <p className="text-xs text-muted-foreground">
-                  We'll send you a verification code
-                </p>
+          {step === "signup" ? (
+            <form onSubmit={handleSendLink} className="space-y-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium">
+                    Email address
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="you@university.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-12"
+                    disabled={loading}
+                    required
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Must be a valid .edu email address
+                  </p>
+                </div>
+
+                {isNewUser && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-sm font-medium">
+                        Full Name
+                      </Label>
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="John Doe"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="h-12"
+                        disabled={loading}
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="age" className="text-sm font-medium">
+                        Age
+                      </Label>
+                      <Input
+                        id="age"
+                        type="number"
+                        placeholder="21"
+                        min="18"
+                        max="100"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        className="h-12"
+                        disabled={loading}
+                        required
+                      />
+                    </div>
+                  </>
+                )}
               </div>
 
               <Button
@@ -79,61 +175,47 @@ const Auth = () => {
                 className="w-full h-12 text-base font-semibold"
                 disabled={loading}
               >
-                {loading ? "Sending code..." : "Send code"}
+                {loading
+                  ? (isNewUser ? "Sending sign-up link..." : "Sending sign-in link...")
+                  : (isNewUser ? "Send sign-up link" : "Send sign-in link")}
               </Button>
+
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setIsNewUser(!isNewUser)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {isNewUser ? "Already have an account? Sign in" : "New user? Sign up"}
+                </button>
+              </div>
             </form>
           ) : (
-            <form onSubmit={handleVerifyOtp} className="space-y-6">
+            <div className="space-y-6">
               <div className="space-y-2">
                 <button
                   type="button"
-                  onClick={() => setStep("email")}
+                  onClick={() => setStep("signup")}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
                 >
                   ← Change email
                 </button>
-                
-                <label htmlFor="otp" className="text-sm font-medium text-foreground">
-                  Verification code
-                </label>
-                <p className="text-sm text-muted-foreground mb-3">
-                  We've sent a 6-digit code to <span className="font-medium text-foreground">{email}</span>
-                </p>
-                <Input
-                  id="otp"
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={6}
-                  placeholder="000000"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                  className="h-12 text-center text-2xl tracking-widest font-semibold"
-                  disabled={loading}
-                  autoComplete="one-time-code"
-                />
-                <p className="text-xs text-muted-foreground">
-                  Code expires in 5 minutes
+                <h2 className="text-lg font-semibold">Check your email</h2>
+                <p className="text-sm text-muted-foreground">
+                  We've sent a sign-in link to <span className="font-medium text-foreground">{email}</span>.
+                  Open it on this device to continue.
                 </p>
               </div>
 
               <Button
-                type="submit"
-                className="w-full h-12 text-base font-semibold"
-                disabled={loading || otp.length !== 6}
-              >
-                {loading ? "Verifying..." : "Verify code"}
-              </Button>
-
-              <button
                 type="button"
-                className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => {
-                  toast.success("New code sent!");
-                }}
+                className="w-full h-12 text-base font-semibold"
+                disabled={loading}
+                onClick={handleResendCode}
               >
-                Didn't receive a code? Resend
-              </button>
-            </form>
+                {loading ? "Resending..." : "Resend link"}
+              </Button>
+            </div>
           )}
         </div>
 

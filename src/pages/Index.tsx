@@ -1,9 +1,15 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Users, MessageCircle, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Auto-redirect to auth page
+    navigate("/auth");
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-background">
