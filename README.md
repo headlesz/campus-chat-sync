@@ -1,5 +1,3 @@
----
-
 ````markdown
 # 🌐 CampusMatch — AI-Powered Campus Connection Platform
 
