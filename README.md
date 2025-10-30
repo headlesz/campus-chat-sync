@@ -168,7 +168,7 @@ cd backend
 npm run dev
 ```
 
-Frontend: [http://localhost:3000](http://localhost:3000)
+Frontend: [http://localhost:8080](http://localhost:8080)
 Backend: [http://localhost:4000](http://localhost:4000)
 
 ---
@@ -180,7 +180,7 @@ In the frontend project directory, you can run:
 ### `npm start`
 
 Runs the app in development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 
 ### `npm test`
 
