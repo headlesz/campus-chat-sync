@@ -266,11 +266,6 @@ SOFTWARE.
 
 ---
 
-## 📫 Contact
-
-**Team:** CampusMatch Developers
-**Email:** [xyz@gmail.com](mailto:xyz@gmail.com)
-**GitHub:** [headlesz](https://github.com/headlesz)
 
 ---
 
